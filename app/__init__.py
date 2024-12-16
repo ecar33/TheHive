@@ -39,15 +39,24 @@ def create_app(config=DevelopmentConfig):
         db.create_all()
         click.echo('Initialized database.')
     
-    # Commands
     @app.cli.command()
     @click.option('--num', required=True, type=int, help='Number of messages to add.')
     def forge(num):
         """ For adding messages to the db """
-        for _ in range(int(num)):
-            m = Message(name=get_random_name(), content=get_random_content())
-            db.session.add(m)
+        if num <= 0:
+            click.echo('The number of messages must be greater than 0.')
+            return
+        
+        try:
+            for _ in range(int(num)):
+                m = Message(name=get_random_name(), content=get_random_content())
+                db.session.add(m)
+            
             db.session.commit()
-        click.echo("Messages successfully added.")
+            click.echo("Messages successfully added.")
+
+        except Exception as e:
+            db.session.rollback()
+            click.echo(f'Something went wrong {e}')
 
     return app
