@@ -4,13 +4,14 @@ click==8.1.7
 colorama==0.4.6
 Deprecated==1.2.15
 dill==0.3.9
-Flask==2.3.3
+Flask==3.1.0
 Flask-Limiter==3.9.2
 Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
-flask-sqlalchemy-stubs @ git+https://github.com/ssfdust/flask-sqlalchemy-stubs.git@b75b56d5a4331a20fc7f97d1b1982b9f02806b70
+flask-sqlalchemy-stubs==0.2
 Flask-WTF==1.2.2
 greenlet==3.1.1
+humanize==4.11.0
 isort==5.13.2
 itsdangerous==2.2.0
 Jinja2==3.1.4
@@ -25,11 +26,13 @@ ordered-set==4.1.0
 packaging==24.2
 platformdirs==4.3.6
 Pygments==2.18.0
+pyjokes==0.8.3
 pylint==3.3.2
 python-dotenv==1.0.1
 rich==13.9.4
 SQLAlchemy==2.0.36
 sqlalchemy-stubs==0.4
+sqlalchemy2-stubs==0.0.2a38
 tomlkit==0.13.2
 typing_extensions==4.12.2
 Werkzeug==3.1.3
