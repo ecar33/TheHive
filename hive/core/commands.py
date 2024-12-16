@@ -1,34 +1,9 @@
-import sys
 import click
-from dotenv import load_dotenv
-from flask import Flask, render_template
-from app.config import DevelopmentConfig, TestingConfig
-from app.extensions import db, limiter
-from app.models import Message
-from helper_functions.random_name_gen import get_random_content, get_random_name
+from hive.lorem import get_random_body, get_random_name
+from hive.core.extensions import db
+from hive.models import Message
 
-# Load environment variables
-load_dotenv()
-
-def create_app(config=DevelopmentConfig):
-    app = Flask(__name__)
-
-    app.config.from_object(config)
-
-    # Bind extensions to app
-    db.init_app(app)
-    limiter.init_app(app)
-
-    # Create db from models if in dev/test
-    if config in [DevelopmentConfig, TestingConfig]:
-        with app.app_context():
-            db.create_all()
-
-    # Import and register blueprints
-    from app.routes import main_bp
-    app.register_blueprint(main_bp)
-
-    # Commands
+def register_commands(app):
     @app.cli.command()
     @click.option('--drop', is_flag=True, help='Create after drop.')
     def initdb(drop):
@@ -49,7 +24,7 @@ def create_app(config=DevelopmentConfig):
         
         try:
             for _ in range(int(num)):
-                m = Message(name=get_random_name(), content=get_random_content())
+                m = Message(name=get_random_name(), body=get_random_body())
                 db.session.add(m)
             
             db.session.commit()
@@ -58,5 +33,3 @@ def create_app(config=DevelopmentConfig):
         except Exception as e:
             db.session.rollback()
             click.echo(f'Something went wrong {e}')
-
-    return app

@@ -7,5 +7,5 @@ def get_random_name():
     name = random.choice(first_names) + ' ' + random.choice(last_names)
     return name
 
-def get_random_content():
+def get_random_body():
     return get_joke("en", "all")

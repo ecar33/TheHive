@@ -1,5 +1,5 @@
-from app import create_app
-from app.config import DevelopmentConfig
+from hive import create_app
+from hive.config import DevelopmentConfig
 
 app = create_app(DevelopmentConfig)
 

@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta, timezone
 import unittest
-from app import create_app
-from app.config import TestingConfig
-from app.extensions import db
-from app.models import Message
+from hive import create_app
+from hive.config import TestingConfig
+from hive.core.extensions import db
+from hive.models import Message
 
 class WatchlistTestCase(unittest.TestCase):
     
@@ -16,7 +16,7 @@ class WatchlistTestCase(unittest.TestCase):
         self.runner = self.app.test_cli_runner()
 
         with self.app.app_context():
-            message = Message(name='test', content='test content')
+            message = Message(name='test', body='test body')
             db.session.add(message)
             db.session.commit()
 
@@ -44,9 +44,9 @@ class WatchlistTestCase(unittest.TestCase):
             
             # Test modifying message
             message.name='new name'
-            message.content='new content'
+            message.body='new body'
             self.assertEqual('new name', message.name)
-            self.assertEqual('new content', message.content)
+            self.assertEqual('new body', message.body)
 
             # Test deleting a message
             db.session.delete(message)
@@ -55,16 +55,16 @@ class WatchlistTestCase(unittest.TestCase):
             self.assertIsNone(message)
 
             # Test adding a message
-            message = Message(name='test', content='test content')
+            message = Message(name='test', body='test body')
             db.session.add(message)
             db.session.commit()
             self.assertEqual('test', message.name)
-            self.assertEqual('test content', message.content)
+            self.assertEqual('test body', message.body)
 
     # Test message
     def test_time_since_creation(self):
         created_at_time = datetime.now(timezone.utc) - timedelta(minutes=30)
-        message = Message(name='test', content='test content', created_at=created_at_time)
+        message = Message(name='test', body='test body', created_at=created_at_time)
         result: timedelta = message.time_since_creation()
         self.assertAlmostEqual(result.total_seconds(), 30 * 60, delta=1)
     
