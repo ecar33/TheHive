@@ -1,24 +1,39 @@
-{% extends "base.html" %}
-{% block title %}Index{% endblock %}
-{% block head %}
-    {{ super() }}
+{% extends "bootstrap/base.html" %}
+
+{% block title %}The Hive Home{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">The Hive</a>
+</nav>
 {% endblock %}
+
 {% block content %}
-    <p class="important"> Welcome to my awesome homepage.</p>
-    <form>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+<div class="container">
+    <h1 class="display-4">Welcome to The Hive</h1>
+    <p class="lead">This is a message board app built with Flask-Bootstrap.</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Post #1</h5>
+                    <p class="card-text">This is an example post.</p>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Post #2</h5>
+                    <p class="card-text">This is another example post.</p>
+                </div>
+            </div>
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
 {% endblock %}
