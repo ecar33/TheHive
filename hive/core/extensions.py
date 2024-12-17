@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
-from flask_bootstrap import Bootstrap
 
 class Base(DeclarativeBase):
     metadata = MetaData(
@@ -17,4 +16,3 @@ class Base(DeclarativeBase):
     )
 
 db = SQLAlchemy(model_class=Base)
-bootstrap = Bootstrap()

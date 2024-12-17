@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from flask import Flask, render_template
 from hive.config import DevelopmentConfig, TestingConfig
 from hive.core.commands import register_commands
-from hive.core.extensions import db, bootstrap
+from hive.core.extensions import db
 from hive.models import Message
 from hive.blueprints.main import main_bp
 
@@ -16,7 +16,6 @@ def create_app(config=DevelopmentConfig):
 
     # Bind extensions to app
     db.init_app(app)
-    bootstrap.init_app(app)
 
     # Create db from models if in dev/test
     if config in [DevelopmentConfig, TestingConfig]:
