@@ -8,69 +8,42 @@
 
 {% block content %}
 
-<div class="container" style="width:40%">
+<div class="container">
     <form method="POST", action="{{ url_for('message.post_message') }}">
       {{ form.hidden_tag() }}
       <div class="mb-3">
-        {{ form.name.label }}
+        {{ form.name.label(class_="fs-5") }}
         {{ form.name(class_="form-control") }}
       </div>
       <div class="mb-3">
-        {{ form.body.label }}
+        {{ form.body.label(class_="fs-5") }}
         {{ form.body(class_="form-control form-control-lg") }}
       </div>
       <div class="mb-3">
-        {{ form.submit(class_="btn btn-secondary") }}
+        {{ form.submit(class_="btn btn-secondary mt-2 mb-2") }}
       </div>
     </form>
 
-  <h3>{{ messages|length }} Messages</h3>
-  
+  <h3>{{ page.total }} Messages</h3>
   <ul class="list-group">
-    {% for message in messages %}
+    {% for message in page.items %}
       <li class="list-group-item">
-        <div class="container">
-          <h5 class="d-inline">{{ message.name }}</h5> 
+        <div class="container pt-4 pb-1">
+          <h5 class="d-inline text-yellow">{{ message.name }}</h5> 
           <p class="d-inline">#{{ message.id }}</p>
           <p class="d-inline float-end">{{ get_timedelta_string(message) }} ago</p>
-          <p>{{ message.body }}</p>
+          <p class="fs-5">{{ message.body }}</p>
         </div>
       </li>
     {% endfor %}
   </ul>
-  <nav class="mt-3">
-    <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" aria-label='Previous'href="#">
-          <span arita-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      {% if count_pages() < 8 %}
-        {% for i in range(1, (count_pages()) + 1) %}
-          <li class="page-item"><a class="page-link" href="#">{{ i }}</a></li>
-        {% endfor %}
-      {% else %}
-        {% for i in range(1, 6) %} 
-          <li class="page-item"><a class="page-link" href="#">{{ i }}</a></li>
-        {% endfor %}
-          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
-        {% for i in range(count_pages() - 1, count_pages() + 1) %}
-          <li class="page-item"><a class="page-link" href="#">{{ i }}</a></li>
-        {% endfor %}
-      {% endif %}
-          <a class="page-link" aria-label='Next'href="#">
-            <span arita-hidden="true">&raquo;</span></a>
-      </li>
-    </ul>
-  </nav>
+    
+  {{ macros.render_pagination(page, 'main.index') }}
+
+
 </div>
 
 {% endblock content%}
-{% block footer %}
-<footer class="container text-center mt-3 mb-3" style="width:40%">
-  <small class="footer-font-size pb-0 mb-0"> &copy; 2024 <a class="link-underline link-underline-opacity-0" href="#">Evan Carlile</a> / <a class="link-underline link-underline-opacity-0" href="https://github.com/ecar33">GitHub</a></small>
-</footer>
-{% endblock footer %}
 
 {% block scripts %}
 {{ super() }}

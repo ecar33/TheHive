@@ -1,5 +1,6 @@
-<!-- Get the current page for navbar -->
 {% set current_page = request.endpoint %}
+{% import 'macros.html' as macros %}
+
 
 {% block doc -%}
 <!DOCTYPE html>
@@ -57,13 +58,17 @@ data-bs-theme='dark'
     
     <div class="container mt-4 alert-width">
       {% for category, message in get_flashed_messages(with_categories=true) %}
-      <div class="alert alert-{{ category }}" role="aert">{{ message|safe }}</div>
+      <div class="alert alert-{{ category }}" role="alert">{{ message|safe }}</div>
       {% endfor %}
     </div>
     
     {% block content -%}{%- endblock content %}
 
-    {% block footer -%}{%- endblock footer %}
+    {% block footer -%}
+    <footer class="container text-center mt-3 mb-3 border-top border-dark-subtle" style="width:40%">
+      <small class="footer-font-size pb-0 mb-0"> &copy; 2024 <a class="link-underline link-underline-opacity-0" href="#">Evan Carlile</a> / <a class="link-underline link-underline-opacity-0" href="https://github.com/ecar33">GitHub</a></small>
+    </footer>
+    {% endblock footer %}
 
     {% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

@@ -39,7 +39,7 @@ def create_app(config=DevelopmentConfig):
         def count_pages():
             stmnt = db.select(Message)
             result = db.session.execute(stmnt).scalars().all()
-            return int(ceil(len(result)/50))
+            return int(ceil(len(result)/100))
         return dict(get_timedelta_string=get_timedelta_string, count_pages=count_pages)
     
     return app
