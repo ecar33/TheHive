@@ -1,6 +1,5 @@
-import humanize
 from hive.core.extensions import db
-from sqlalchemy import DateTime, String, Integer, ForeignKey, Text
+from sqlalchemy import String, Text
 from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -15,6 +14,3 @@ class Message(db.Model):
         now = datetime.now(timezone.utc)
         td = now - created_at_tz_aware
         return td
-    
-    def convert_td_to_str(td: timedelta) -> str:
-        return humanize.naturaldelta(td)

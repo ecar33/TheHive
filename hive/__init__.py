@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template
+import humanize
 from hive.config import DevelopmentConfig, TestingConfig
 from hive.core.commands import register_commands
 from hive.core.extensions import db
 from hive.models import Message
 from hive.blueprints.main import main_bp
+from hive.blueprints.message import message_bp
 
 # Load environment variables
 load_dotenv()
@@ -24,7 +26,15 @@ def create_app(config=DevelopmentConfig):
 
     # Import and register blueprints
     app.register_blueprint(main_bp)
+    app.register_blueprint(message_bp)
 
     register_commands(app)
 
+    @app.context_processor
+    def utility_processor():
+        def get_timedelta_string(message: Message):
+            td = message.time_since_creation()
+            return humanize.naturaldelta(td)
+        return dict(get_timedelta_string=get_timedelta_string)
+    
     return app
