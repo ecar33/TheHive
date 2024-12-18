@@ -1,3 +1,4 @@
+from math import ceil
 from dotenv import load_dotenv
 from flask import Flask, render_template
 import humanize
@@ -35,6 +36,10 @@ def create_app(config=DevelopmentConfig):
         def get_timedelta_string(message: Message):
             td = message.time_since_creation()
             return humanize.naturaldelta(td)
-        return dict(get_timedelta_string=get_timedelta_string)
+        def count_pages():
+            stmnt = db.select(Message)
+            result = db.session.execute(stmnt).scalars().all()
+            return int(ceil(len(result)/50))
+        return dict(get_timedelta_string=get_timedelta_string, count_pages=count_pages)
     
     return app
