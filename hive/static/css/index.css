@@ -7,3 +7,7 @@
     min-height: 60px;
     max-height: auto;
 }
+
+.text-form {
+    height: 190px!important;
+}
