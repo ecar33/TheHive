@@ -92,7 +92,8 @@ class WatchlistTestCase(unittest.TestCase):
     def test_index_page(self):
         response = self.client.get('/')
         data = response.get_data(as_text=True)
-        self.assertIn('')
+        self.assertIn('The Hive', data)
+        self.assertIn('leave a message', data)
 
     # Test CLI
     def test_initdb(self):
