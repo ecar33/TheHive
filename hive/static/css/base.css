@@ -1,3 +1,7 @@
 .text-yellow {
     color: #FECF45 !important; 
 }
+
+.container {
+    max-width: 720px !important;
+}
