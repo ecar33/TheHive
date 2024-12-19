@@ -10,8 +10,8 @@ def post_message():
     form = PostMessageForm()
 
     if form.validate_on_submit():
-        name = request.form.get('name')
-        body = request.form.get('body')
+        name = request.form.get('name').strip()
+        body = request.form.get('body').strip()
         message = Message(name=name, body=body)
         db.session.add(message)
         db.session.commit()

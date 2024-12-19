@@ -68,6 +68,32 @@ class WatchlistTestCase(unittest.TestCase):
         result: timedelta = message.time_since_creation()
         self.assertAlmostEqual(result.total_seconds(), 30 * 60, delta=1)
     
+    # Test form
+    def test_form_validation(self):
+        response = self.client.post('/message/post', data=dict(
+            name='test',
+            body='Hello world'
+        ), follow_redirects=True)
+
+        data = response.get_data(as_text=True)
+        self.assertIn('Message succesfully added!', data)
+        self.assertIn('Hello world', data)
+
+        response = self.client.post('/message/post', data=dict(
+            name='',
+            body='Bad form'
+        ), follow_redirects=True)
+
+        data = response.get_data(as_text=True)
+        self.assertIn('Error in message', data)
+        self.assertNotIn('Bad form', data)
+
+    # Test index page
+    def test_index_page(self):
+        response = self.client.get('/')
+        data = response.get_data(as_text=True)
+        self.assertIn('')
+
     # Test CLI
     def test_initdb(self):
         with self.app.app_context():
@@ -83,11 +109,14 @@ class WatchlistTestCase(unittest.TestCase):
     def test_forge(self):
         with self.app.app_context():
             # Test db initializes
-            result = self.runner.invoke(args=['forge', '--num', '1'])
-            self.assertIn('Messages successfully added.', result.output)
+            count = 10
+            result = self.runner.invoke(args=['forge', '--num', count])
+            self.assertIn(f'{count} messages successfully added.', result.output)
             messages = Message.query.all()
-            self.assertEqual(2, len(messages))
 
+            # DB starts with 1 message, so check for count + 1 messages
+            self.assertEqual(11, len(messages))
+    
 # Run tests
 if __name__ == '__main__':
     unittest.main()

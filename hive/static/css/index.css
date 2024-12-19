@@ -1,3 +1,9 @@
 .text-yellow {
     color: #FECF45 !important; 
 }
+
+.icon {
+    width: 60px;
+    min-height: 60px;
+    max-height: auto;
+}

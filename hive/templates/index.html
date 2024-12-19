@@ -7,7 +7,13 @@
 {% endblock styles %}
 
 {% block content %}
-
+    <div class="d-flex container text-center align-items-end justify-content-center">
+      <div class="d-flex align-items-end flex">
+        <img src="{{ url_for('static', filename='images/icon.png') }}" class="img-fluid icon" alt="...">
+        <h1 class="text-yellow">The Hive</h3>
+      </div>
+      <h4 class="ms-4 d-flex fs-6 text-dark-tertiary">leave a message</h4>
+    </div>
     <form method="POST", action="{{ url_for('message.post_message') }}">
       {{ form.hidden_tag() }}
       <div class="mb-3">

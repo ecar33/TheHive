@@ -28,7 +28,7 @@ def register_commands(app):
                 db.session.add(m)
             
             db.session.commit()
-            click.echo("Messages successfully added.")
+            click.echo(f"{num} messages successfully added.")
 
         except Exception as e:
             db.session.rollback()
