@@ -94,7 +94,15 @@ class WatchlistTestCase(unittest.TestCase):
         data = response.get_data(as_text=True)
         self.assertIn('The Hive', data)
         self.assertIn('leave a message', data)
-
+    
+    # Test error pages
+    def test_404_page(self):
+        response = self.client.get('/nothing')
+        data = response.get_data(as_text=True)
+        self.assertIn('Page Not Found - 404', data)
+        self.assertIn('Go Back', data)
+        self.assertEqual(response.status_code, 404)
+    
     # Test CLI
     def test_initdb(self):
         with self.app.app_context():

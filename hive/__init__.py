@@ -4,6 +4,7 @@ from flask import Flask, render_template
 import humanize
 from hive.config import DevelopmentConfig, TestingConfig
 from hive.core.commands import register_commands
+from hive.core.errors import register_errors
 from hive.core.extensions import db
 from hive.models import Message
 from hive.blueprints.main import main_bp
@@ -30,6 +31,7 @@ def create_app(config=DevelopmentConfig):
     app.register_blueprint(message_bp)
 
     register_commands(app)
+    register_errors(app)
 
     @app.context_processor
     def utility_processor():
