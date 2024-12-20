@@ -34,7 +34,7 @@ def create_app(config=None):
     # Bind extensions to app
     db.init_app(app)
 
-    print(f'DB is: {app.config['SQLALCHEMY_DATABASE_URI']}')
+    print(f'DB is: {app.config["SQLALCHEMY_DATABASE_URI"]}')
 
     # Create db from models if in dev/test
     if config in [DevelopmentConfig, TestingConfig]:
