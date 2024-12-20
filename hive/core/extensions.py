@@ -1,6 +1,4 @@
-from flask_limiter import Limiter
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 
