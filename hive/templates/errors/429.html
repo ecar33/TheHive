@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Too Many Requests</h3>
+<p>Limit is {{ error.description }}</p>
+<a href="{{ url_for('main.index') }}">Go Back</a>
+{% endblock %}

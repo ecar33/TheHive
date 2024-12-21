@@ -1,11 +1,12 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from hive.forms import PostMessageForm
 from hive.models import Message
-from hive.core.extensions import db
+from hive.core.extensions import db, limiter
 
 message_bp = Blueprint('message', __name__, url_prefix='/message')
 
 @message_bp.route('/post', methods=['POST'])
+@limiter.limit("20 per hour")
 def post_message():
     form = PostMessageForm()
 
@@ -18,5 +19,5 @@ def post_message():
         flash("Message succesfully added!", "success")
         return(redirect(url_for('main.index')))
     
-    flash("Error in message", 'warning')
+    flash(f"Error in message {form.errors.items()}", 'warning')
     return redirect(url_for('main.index'))

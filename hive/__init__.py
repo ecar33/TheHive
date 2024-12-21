@@ -2,12 +2,12 @@ from math import ceil
 import os
 import sys
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask
 import humanize
 from hive.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from hive.core.commands import register_commands
 from hive.core.errors import register_errors
-from hive.core.extensions import db
+from hive.core.extensions import db, limiter
 from hive.models import Message
 from hive.blueprints.main import main_bp
 from hive.blueprints.message import message_bp
@@ -33,6 +33,7 @@ def create_app(config=None):
 
     # Bind extensions to app
     db.init_app(app)
+    limiter.init_app(app)
 
     print(f'DB is: {app.config["SQLALCHEMY_DATABASE_URI"]}')
 

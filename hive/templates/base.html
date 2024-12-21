@@ -43,11 +43,6 @@ data-bs-theme='dark'
               aria-current="{% if current_page == 'main.index' %}page{% endif %}" 
               href="{{ url_for('main.index') }}">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link {% if current_page == 'main.about' %}active{% endif %}" 
-              aria-current="{% if current_page == 'main.about' %}page{% endif %}"
-              href="{{ url_for('main.about') }}">About</a>
-            </li>
           </ul>
         </div>
       </div>
