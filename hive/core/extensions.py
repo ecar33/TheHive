@@ -3,6 +3,10 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_bcrypt import Bcrypt
+from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager
+
 
 class Base(DeclarativeBase):
     metadata = MetaData(
@@ -17,3 +21,6 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 limiter = Limiter(key_func=get_remote_address)
+bcrypt = Bcrypt()
+crsf = CSRFProtect()
+login_manager = LoginManager()

@@ -10,7 +10,7 @@ class Config:
     RATELIMIT_DEFAULT = "200 per hour"
 
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(os.getcwd(), 'dev.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(os.getcwd(), 'data.db')
 
 class TestingConfig(Config):
     TESTING = True

@@ -1,7 +1,8 @@
 import click
 from hive.lorem import get_random_body, get_random_name
 from hive.core.extensions import db
-from hive.models import Message
+from hive.models import Message, User
+from hive.core.extensions import bcrypt
 
 def register_commands(app):
     @app.cli.command()
@@ -33,3 +34,23 @@ def register_commands(app):
         except Exception as e:
             db.session.rollback()
             click.echo(f'Something went wrong {e}')
+
+    @app.cli.command()
+    @click.option('--username', prompt=True, help='The username used to login.')
+    @click.option('--password', prompt=True, hide_input=True, confirmation_prompt=True, help='The password used to login')
+    def create_user(username, password):
+        user = db.session.execute(db.select(User).where(User.username == username)).scalars().first()
+
+        if user is not None:
+            click.echo('Updating user...')
+            user.username = username
+            user.set_password(password)
+        else:
+            click.echo('Creating user...')
+            user = User(username=username)
+            user.set_password(password)
+            db.session.add(user)
+
+        db.session.commit()
+        
+        click.echo('Done.')

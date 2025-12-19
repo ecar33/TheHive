@@ -5,3 +5,4 @@ app = create_app(ProductionConfig)
 
 if __name__ == '__main__':
     app.run(debug=False)
+    app.config['TESTING'] = True
