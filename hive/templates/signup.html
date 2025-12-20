@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% for error in form.confirm_password.errors %}
+  <div class="error">{{ error }}</div>
+{% endfor %}
+
+<form method="POST">
+    {{ form.csrf_token }}
+    {{ form.username.label }}
+    {{ form.username }}
+    <br>
+    <br>
+    {{ form.password.label }}
+    {{ form.password }}
+    <br>
+    <br>
+    {{ form.confirm_password.label }}
+    {{ form.confirm_password }}
+    <br>
+    <br>
+    {{ form.submit }}
+</form>
+{% endblock content%}

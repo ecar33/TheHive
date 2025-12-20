@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta, timezone
 import unittest
+
 from hive import create_app
 from hive.config import TestingConfig
 from hive.core.extensions import db
-from hive.models import Message
+from hive.models import Message, User
 
 class WatchlistTestCase(unittest.TestCase):
-    
     # Setup run before every test
     def setUp(self):
         self.app = create_app(TestingConfig)
@@ -16,8 +16,14 @@ class WatchlistTestCase(unittest.TestCase):
         self.runner = self.app.test_cli_runner()
 
         with self.app.app_context():
+            db.create_all()
+            
             message = Message(name='test', body='test body')
+            user = User(username='testuser')
+            password = 'password'
+            user.set_password(password)
             db.session.add(message)
+            db.session.add(user)
             db.session.commit()
 
     # Cleanup run after every test
@@ -37,7 +43,6 @@ class WatchlistTestCase(unittest.TestCase):
     # Test db
     def test_message(self):
         with self.app.app_context():
-
             # Test message was succesfully added
             message = Message.query.first()
             self.assertTrue(message)
@@ -68,12 +73,70 @@ class WatchlistTestCase(unittest.TestCase):
         result: timedelta = message.time_since_creation()
         self.assertAlmostEqual(result.total_seconds(), 30 * 60, delta=1)
     
+    # Test login
+    def test_login(self):
+        username = 'testuser'
+        password = 'password'
+        wrongpassword = 'abc'
+
+        response = self.client.post('/login', data=dict(
+            username=username,
+            password=password
+        ), follow_redirects=True)
+        
+        data = response.get_data(as_text=True)
+        self.assertIn(f'Successfully signed in, welcome {username}', data)
+
+        response = self.client.post('/login', data=dict(
+            username=username,
+            password=wrongpassword
+        ), follow_redirects=True)
+        
+        data = response.get_data(as_text=True)
+        self.assertIn(f'User not found or password was incorrect, try again.', data)
+
+    # Test signup
+    def test_signup(self):
+        username = 'testusersignup'
+        password = 'password'
+        wrongpassword = 'abc'
+
+        response = self.client.post('/signup', data=dict(
+            username=username,
+            password=password,
+            confirm_password=password
+        ), follow_redirects=True)
+        
+        data = response.get_data(as_text=True)
+        self.assertIn(f'User successfully created! Please sign in.', data)
+
+        response = self.client.post('/signup', data=dict(
+            username=username,
+            password=password,
+            confirm_password=password
+        ), follow_redirects=True)
+        
+        data = response.get_data(as_text=True)
+        self.assertIn(f'User already exists, please use a different username.', data)
+
+        
+        response = self.client.post('/signup', data=dict(
+            username=username,
+            password=password,
+            confirm_password=wrongpassword
+        ), follow_redirects=True)
+        
+        data = response.get_data(as_text=True)
+        self.assertIn(f'Passwords must match.', data)
+    
     # Test form
     def test_form_validation(self):
         response = self.client.post('/message/post', data=dict(
             name='test',
             body='Hello world'
         ), follow_redirects=True)
+        
+        assert response.status_code == 200
 
         data = response.get_data(as_text=True)
         self.assertIn('Message succesfully added!', data)
@@ -91,6 +154,9 @@ class WatchlistTestCase(unittest.TestCase):
     # Test index page
     def test_index_page(self):
         response = self.client.get('/')
+
+        assert response.status_code == 200
+
         data = response.get_data(as_text=True)
         self.assertIn('The Hive', data)
         self.assertIn('leave a message', data)
@@ -126,6 +192,21 @@ class WatchlistTestCase(unittest.TestCase):
             # DB starts with 1 message, so check for count + 1 messages
             self.assertEqual(11, len(messages))
     
+    def test_create_user(self):
+        with self.app.app_context():
+            # Test user is created
+            username = 'test'
+            password = 'password'
+            result = self.runner.invoke(args=['create-user', '--username', username, '--password', password])
+            
+            self.assertIn(f'Creating user...\nDone.\n', result.output)
+            
+            db.session.remove() 
+
+            user = db.session.execute(db.select(User).where(User.username == username)).scalar_one()
+
+            self.assertIsNotNone(user)
+
 # Run tests
 if __name__ == '__main__':
     unittest.main()

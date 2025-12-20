@@ -49,13 +49,15 @@
             <a class="nav-link" href="{{ url_for('auth.logout') }}"> User: {{ current_user.username }}</a>
           </li>
           {% else %}
-          {% if current_page != 'auth.login' %}
           <li class="nav-item">
-            <a class="nav-link"
+            <a class="nav-link {% if current_page == 'auth.login' %}active{% endif %}"
               href="{{ url_for('auth.login') }}">Login</a>
           </li>
           {% endif %}
-          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link {% if current_page == 'auth.signup' %}active{% endif %}"
+              href="{{ url_for('auth.signup') }}">Sign Up</a>
+          </li>
         </ul>
       </div>
     </div>
