@@ -18,19 +18,23 @@ load_dotenv()
 
 WIN = sys.platform.startswith('win')
 
-def create_app(config=None):
+def create_app(config_class=None):
     app = Flask(__name__)
 
-    app.config.from_object(config)
-    
-    if config == ProductionConfig:
+    # Config selection
+    if config_class is not None:
+        app.config.from_object(config_class)
+    else:
+        env = os.getenv("FLASK_CONFIG", "development")
 
-        db_file_path = os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE', 'data.db'))
+        config_map = {
+            "development": DevelopmentConfig,
+            "testing": TestingConfig,
+            "production": ProductionConfig,
+        }
 
-        if WIN:
-            db_file_path = db_file_path.replace('\\', '/')
-
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_file_path
+        config = config_map[env]
+        app.config.from_object(config)
 
     # Bind extensions to app
     db.init_app(app)
