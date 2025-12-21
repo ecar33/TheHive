@@ -1,1 +1,1 @@
-web: gunicorn hive.main:create_app()
+web: gunicorn hive.main:app
