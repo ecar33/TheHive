@@ -23,6 +23,7 @@ def create_app(config_class=None):
 
     # Config selection
     if config_class is not None:
+        config = config_class
         app.config.from_object(config_class)
     else:
         env = os.getenv("FLASK_CONFIG", "development")
