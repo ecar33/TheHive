@@ -20,11 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.1 
       - uses: actions/setup-python@v6.1.0
-      - run: pip install -r requirements.txt  # install requirements to enable GitHub run tests
-      - run:  python -m unittest discover -s tests
+      - run: pip install -r requirements.txt
+      - run: python -m unittest
 
-      - uses: akhileshns/heroku-deploy@v3.14.15 #
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.14.15
         with:
-          heroku_api_key: $ {{secrets.HEROKU_API_KEY}}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: hive-app
-          heroku_email: evanc2022@gmail.com
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
