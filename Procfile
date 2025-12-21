@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app
+web: gunicorn hive.main:create_app()
