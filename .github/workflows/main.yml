@@ -25,6 +25,6 @@ jobs:
 
       - uses: akhileshns/heroku-deploy@v3.14.15 #
         with:
-          heroku_api_key: $ {{ secrets.SECRET_KEY }}
+          heroku_api_key: $ {{secrets.HEROKU_API_KEY}}
           heroku_app_name: hive-app
           heroku_email: evanc2022@gmail.com
