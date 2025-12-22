@@ -1,6 +1,7 @@
-from wtforms.validators import DataRequired, Length, EqualTo
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, EqualTo, Length
+
 
 class PostMessageForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()], render_kw={"placeholder": 'Enter your name...'})

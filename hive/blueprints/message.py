@@ -1,7 +1,8 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, request, url_for
+
+from hive.core.extensions import db, limiter
 from hive.forms import PostMessageForm
 from hive.models import Message
-from hive.core.extensions import db, limiter
 
 message_bp = Blueprint('message', __name__, url_prefix='/message')
 

@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta, timezone
 import unittest
+from datetime import datetime, timedelta, timezone
 
 from hive import create_app
 from hive.config import TestingConfig
 from hive.core.extensions import db
 from hive.models import Message, User
+
 
 class WatchlistTestCase(unittest.TestCase):
     # Setup run before every test
@@ -93,7 +94,7 @@ class WatchlistTestCase(unittest.TestCase):
         ), follow_redirects=True)
         
         data = response.get_data(as_text=True)
-        self.assertIn(f'User not found or password was incorrect, try again.', data)
+        self.assertIn('User not found or password was incorrect, try again.', data)
 
     # Test signup
     def test_signup(self):
@@ -108,7 +109,7 @@ class WatchlistTestCase(unittest.TestCase):
         ), follow_redirects=True)
         
         data = response.get_data(as_text=True)
-        self.assertIn(f'User successfully created! Please sign in.', data)
+        self.assertIn('User successfully created! Please sign in.', data)
 
         response = self.client.post('/signup', data=dict(
             username=username,
@@ -117,7 +118,7 @@ class WatchlistTestCase(unittest.TestCase):
         ), follow_redirects=True)
         
         data = response.get_data(as_text=True)
-        self.assertIn(f'User already exists, please use a different username.', data)
+        self.assertIn('User already exists, please use a different username.', data)
 
         
         response = self.client.post('/signup', data=dict(
@@ -127,7 +128,7 @@ class WatchlistTestCase(unittest.TestCase):
         ), follow_redirects=True)
         
         data = response.get_data(as_text=True)
-        self.assertIn(f'Passwords must match.', data)
+        self.assertIn('Passwords must match.', data)
     
     # Test form
     def test_form_validation(self):
@@ -199,7 +200,7 @@ class WatchlistTestCase(unittest.TestCase):
             password = 'password'
             result = self.runner.invoke(args=['create-user', '--username', username, '--password', password])
             
-            self.assertIn(f'Creating user...\nDone.\n', result.output)
+            self.assertIn('Creating user...\nDone.\n', result.output)
             
             db.session.remove() 
 

@@ -1,5 +1,6 @@
 from flask import render_template
 
+
 def register_errors(app):
     @app.errorhandler(400)
     def bad_request(e):

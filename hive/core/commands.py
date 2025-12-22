@@ -1,8 +1,9 @@
 import click
-from hive.lorem import get_random_body, get_random_name
+
 from hive.core.extensions import db
+from hive.lorem import get_random_body, get_random_name
 from hive.models import Message, User
-from hive.core.extensions import bcrypt
+
 
 def register_commands(app):
     @app.cli.command()

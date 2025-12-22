@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template
+
+from hive.core.extensions import db
 from hive.forms import PostMessageForm
 from hive.models import Message
-from hive.core.extensions import db
 
 main_bp = Blueprint('main', __name__)
 

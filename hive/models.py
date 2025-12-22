@@ -1,8 +1,11 @@
-from flask_login import UserMixin
-from hive.core.extensions import db, bcrypt
-from sqlalchemy import String, Text
 from datetime import datetime, timedelta, timezone
+
+from flask_login import UserMixin
+from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column
+
+from hive.core.extensions import bcrypt, db
+
 
 class Message(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)

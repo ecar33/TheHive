@@ -1,9 +1,9 @@
-from flask import Blueprint, flash, redirect, render_template, request, session, url_for, current_app
+from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import login_required, login_user, logout_user
 
+from hive.core.extensions import db
 from hive.forms import LoginForm, SignupForm
 from hive.models import User
-from hive.core.extensions import db
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -18,7 +18,7 @@ def login():
             login_user(user)
             flash(f'Successfully signed in, welcome {username}', 'success')        
             return redirect(url_for('main.index'))
-        flash(f'User not found or password was incorrect, try again.', 'error')        
+        flash('User not found or password was incorrect, try again.', 'error')        
         return redirect(url_for('auth.login'))    
     return render_template('login.html', form=form)
 

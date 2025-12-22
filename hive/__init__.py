@@ -1,17 +1,19 @@
-from math import ceil
 import os
 import sys
+from math import ceil
+
+import humanize
 from dotenv import load_dotenv
 from flask import Flask
-import humanize
+
+from hive.blueprints.auth import auth_bp
+from hive.blueprints.main import main_bp
+from hive.blueprints.message import message_bp
 from hive.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from hive.core.commands import register_commands
 from hive.core.errors import register_errors
-from hive.core.extensions import db, limiter, bcrypt, crsf, login_manager, migrate
+from hive.core.extensions import bcrypt, crsf, db, limiter, login_manager, migrate
 from hive.models import Message, User
-from hive.blueprints.main import main_bp
-from hive.blueprints.message import message_bp
-from hive.blueprints.auth import auth_bp
 
 # Load environment variables
 load_dotenv()
