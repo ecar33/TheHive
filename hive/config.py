@@ -25,4 +25,11 @@ class TestingConfig(Config):
     WTF_CSRF_ENABLED = False
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = None 
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    uri = os.getenv("DATABASE_URL")
+
+    # Heroku gives postgres:// but SQLAlchemy expects postgresql://
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URI = uri
