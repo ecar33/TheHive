@@ -9,15 +9,14 @@ class Config:
     RATELIMIT_HEADERS_ENABLED = True
     RATELIMIT_DEFAULT = "200 per hour"
 
-class DevelopmentConfig(Config):
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    uri = os.getenv("DATABASE_URL")
-
-    # Heroku gives postgres:// but SQLAlchemy expects postgresql://
+    uri = os.getenv("DATABASE_URL", "sqlite:///local.db")
     if uri.startswith("postgres://"):
         uri = uri.replace("postgres://", "postgresql://", 1)
+
     SQLALCHEMY_DATABASE_URI = uri
+
+class DevelopmentConfig(Config):
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class TestingConfig(Config):
     TESTING = True
@@ -26,10 +25,3 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    uri = os.getenv("DATABASE_URL")
-
-    # Heroku gives postgres:// but SQLAlchemy expects postgresql://
-    if uri.startswith("postgres://"):
-        uri = uri.replace("postgres://", "postgresql://", 1)
-    SQLALCHEMY_DATABASE_URI = uri
