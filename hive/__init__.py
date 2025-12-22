@@ -7,7 +7,7 @@ import humanize
 from hive.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from hive.core.commands import register_commands
 from hive.core.errors import register_errors
-from hive.core.extensions import db, limiter, bcrypt, crsf, login_manager
+from hive.core.extensions import db, limiter, bcrypt, crsf, login_manager, migrate
 from hive.models import Message, User
 from hive.blueprints.main import main_bp
 from hive.blueprints.message import message_bp
@@ -43,13 +43,9 @@ def create_app(config_class=None):
     bcrypt.init_app(app)
     crsf.init_app(app)
     login_manager.init_app(app)
+    migrate.init_app(app, db)
 
     print(f'DB is: {app.config["SQLALCHEMY_DATABASE_URI"]}')
-
-    # Create db from models if in dev/test
-    if config in [DevelopmentConfig, TestingConfig]:
-        with app.app_context():
-            db.create_all()
 
     # Import and register blueprints
     app.register_blueprint(main_bp)
