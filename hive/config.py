@@ -10,7 +10,9 @@ class Config:
     RATELIMIT_DEFAULT = "200 per hour"
 
 class DevelopmentConfig(Config):
-    uri = os.getenv("DATABASE_URL", "sqlite:///local.db")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    uri = os.getenv("DATABASE_URL")
 
     # Heroku gives postgres:// but SQLAlchemy expects postgresql://
     if uri.startswith("postgres://"):
