@@ -1,1 +1,1 @@
-web: gunicorn hive.main:app
+web: gunicorn main:app
