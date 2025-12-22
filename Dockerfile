@@ -1,5 +1,5 @@
 # Use an official Python image
-FROM python:3.12
+FROM python:3.11
 
 # Set working directory
 WORKDIR /app
@@ -10,10 +10,13 @@ COPY . .
 # Install dependencies
 RUN pip install -r requirements.txt
 
-ENV FLASK_APP=app.py
-ENV FLASK_CONFIG=development
+# For deploying with Flask
+# ENV FLASK_APP=main.py
+# ENV FLASK_CONFIG=development
+# ENV FLASK_APP=main:app
+# CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
 
 EXPOSE 5000
 
 # Run the app
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["gunicorn", "main:app", "-b", "0.0.0.0:8000"]
