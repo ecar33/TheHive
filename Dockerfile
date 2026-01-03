@@ -16,7 +16,7 @@ RUN pip install -r requirements.txt
 # ENV FLASK_APP=main:app
 # CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
 
-EXPOSE 5000
+EXPOSE 8000
 
 # Run the app
-CMD ["gunicorn", "main:app", "-b", "0.0.0.0:8000"]
+CMD ["gunicorn", "main:create_app()", "-b", "0.0.0.0:8000"]
