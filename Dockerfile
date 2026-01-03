@@ -19,4 +19,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # Run the app
-CMD ["gunicorn", "main:create_app()", "-b", "0.0.0.0:8000"]
+CMD ["gunicorn", "main:app", "-b", "0.0.0.0:8000"]
